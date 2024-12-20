@@ -9,11 +9,11 @@ CREATE TABLE "utilisateur"
 (
 "id_utilisateur" VARCHAR(50) ,
 CONSTRAINT "PK_utilisateur" PRIMARY KEY("id_utilisateur"),
-"nom_utilisateur" VARCHAR(30),
-"prenom" VARCHAR(30),
+"nom_utilisateur" VARCHAR(30) not null,
+"prenom" VARCHAR(30) not null,
 "genre" VARCHAR(1) not null,
 constraint "check_genre_utilisateur" check("genre" in("F","M")), 
-"email" VARCHAR(30) not null unique,
+"email" VARCHAR(50) not null unique,
 "mot_de_passe" VARCHAR(25) not null ,
 constraint "check_moteDePasse_utilisateur" check(length("mot_de_passe") between 10 and 25)
 );
@@ -39,8 +39,8 @@ CREATE TABLE "localisation"
 "nom_rue" varchar(50),
 "code_postal" varchar(5),
 CONSTRAINT "PK_localisation" PRIMARY KEY("num_rue","nom_rue","code_postal"),
-"latitude" numeric not null,
-"longtitude" numeric not null
+"latitude" numeric(9,6) not null,
+"longitude" numeric(9,6) not null
 );
 
 ----------------- Table N°4 : "Tabib"."medecin" ----------------
@@ -53,7 +53,7 @@ CONSTRAINT "PK_medecin" PRIMARY KEY("id_medecin"),
 constraint "FG1_medecin" foreign key("id_medecin") references "utilisateur"("id_utilisateur"),
 "specialite" varchar(30) not null,
 "annee_experience" int not null,
-"teleconsultation_possible" boolean ,
+"teleconsultation_possible" boolean default false,
 "num_rue" int not null,
 constraint "FG2_medecin" foreign key("num_rue") references "localisation"("num_rue"),
 "nom_rue" varchar(50) not null,
@@ -93,7 +93,7 @@ CREATE TABLE "assurance"
 (
 "id_assurance" int,
 CONSTRAINT "PK_assurance" PRIMARY KEY("id_assurance"),
-"nom_assurance" VARCHAR(35),
+"nom_assurance" VARCHAR(35) not null,
 );
 
 
@@ -107,8 +107,8 @@ CONSTRAINT "PK_creneau" PRIMARY KEY("id_creneau"),
 "date_creneau" date not null ,
 "heure_debut" time not null,
 "heure_fin" time not null,
-"est_dispo" boolean,
-"type" varchar(16) not null,
+"est_dispo" boolean default true,
+"type" varchar(16) not null check("type" in ("téléconsultation","présentiel"),
 "lien_teleconsultation" varchar(60)
 );
 
@@ -120,7 +120,7 @@ CREATE TABLE "evaluation"
 (
 "id_evaluation" int,
 CONSTRAINT "PK_evaluation" PRIMARY KEY("id_evaluation"),
-"note" int,
+"note" int not null,
 constraint "check_evaluation_note" check(note between 0 and 5)
 "date_evaluation" date default CURRENT_DATE(),
 "commentaire" varchar(120),
