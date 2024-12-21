@@ -15,7 +15,7 @@ CONSTRAINT "PK_utilisateur" PRIMARY KEY("id_utilisateur"),
 constraint "check_genre_utilisateur" check("genre" in("F","M")), 
 "email" VARCHAR(50) not null unique,
 "mot_de_passe" VARCHAR(25) not null ,
-constraint "check_moteDePasse_utilisateur" check(length("mot_de_passe") between 10 and 25)
+constraint "check_motDePasse_utilisateur" check(length("mot_de_passe") between 10 and 25)
 );
 
 
