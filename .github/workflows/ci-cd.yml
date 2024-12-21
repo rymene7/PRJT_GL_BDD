@@ -1,59 +1,26 @@
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+name: Deploy to Vercel
 
 jobs:
-  build:
+  deploy-frontend:
     runs-on: ubuntu-latest
-
     steps:
-    # Étape 1 : Récupérer le code
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
-    # Étape 2 : Installer Node.js
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-
-    # Étape 3 : Installer les dépendances pour le backend
-    - name: Install Backend Dependencies
-      working-directory: ./backend
-      run: npm install
-
-    # Étape 4 : Installer les dépendances pour le frontend
-    - name: Install Frontend Dependencies
-      working-directory: ./frontend
-      run: npm install
-
-    # Étape 5 : Construire le frontend
-    - name: Build Frontend
-      working-directory: ./frontend
-      run: npm run build
-
-    # Étape 6 : Valider le backend
-    - name: Lint Backend
-      working-directory: ./backend
-      run: npm run lint
-
-  deploy:
+      - name: Deploy Frontend
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID_FRONT }} --prod
+          
+  deploy-backend:
     runs-on: ubuntu-latest
-    needs: build
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
-    - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deploy Backend
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID_BACK }} --prod
