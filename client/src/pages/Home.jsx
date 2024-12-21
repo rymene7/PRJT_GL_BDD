@@ -27,7 +27,7 @@ const Home = () => {
       <Searchbar />
 
       <div className="bg-gradient-to-bl from-[#25B4F8] from-[-30%]">
-
+        <h1 className="text-7xl">hello world</h1>
       </div>
     </div>
   );
