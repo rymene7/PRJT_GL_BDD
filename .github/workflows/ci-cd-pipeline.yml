@@ -1,0 +1,66 @@
+# .github/workflows/ci-cd-pipeline.yml
+
+name: CI/CD Pipeline
+
+# ✅ Déclencheur : Lorsqu'un code est poussé ou qu'une Pull Request est créée
+on:
+  push:
+    branches:
+      - main  # Lorsqu'on pousse du code sur la branche principale
+  pull_request:
+    branches:
+      - main  # Lorsqu'une PR est créée vers la branche principale
+
+# ✅ Liste des jobs (tâches)
+jobs:
+
+  lint:
+    name: 🧹 Validation du Code (Lint)
+    runs-on: ubuntu-latest  # Environnement Linux pour exécuter les commandes
+
+    steps:
+      - name: 📥 Récupération du Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Installation des Dépendances
+        run: npm install
+
+      - name: 🔍 Vérification du Code avec ESLint
+        run: npm run lint
+
+  build:
+    name: 🛠️ Construction du Projet
+    runs-on: ubuntu-latest
+    needs: lint  # Ce job s'exécute uniquement si le job 'lint' réussit
+
+    steps:
+      - name: 📥 Récupération du Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Installation des Dépendances
+        run: npm install
+
+      - name: 🛠️ Construction de l'Application
+        run: npm run build
+
+  deploy:
+    name: 🚀 Déploiement
+    runs-on: ubuntu-latest
+    needs: build  # Ce job s'exécute uniquement si le job 'build' réussit
+    if: github.ref == 'refs/heads/main'  # Ne se déploie que sur la branche principale
+
+    steps:
+      - name: 📥 Récupération du Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Installation des Dépendances
+        run: npm install
+
+      - name: 🛠️ Construction de l'Application
+        run: npm run build
+
+      - name: 🚀 Déploiement sur Serveur
+        run: |
+          echo "Déploiement en cours..."
+          # Exemple de commande pour déployer :
+          # scp -r ./dist user@serveur:/chemin/vers/projet
