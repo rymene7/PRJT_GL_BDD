@@ -21,7 +21,7 @@ jobs:
           node-version: '22'
       - name: Install dependencies (Frontend)
         working-directory: ./client
-        run: npm ci # Use npm ci for faster and more reliable installs in CI
+        run: npm i
       - name: Lint and Test (Frontend)
         working-directory: ./client
         run: |
@@ -29,7 +29,7 @@ jobs:
           npm test
       - name: Install dependencies (Backend)
         working-directory: ./server
-        run: npm ci # Use npm ci
+        run: npm i
       - name: Lint and Test (Backend)
         working-directory: ./server
         run: |
