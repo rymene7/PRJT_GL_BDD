@@ -49,8 +49,8 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
       - name: Deploy Frontend
-        working-directory: ./client
+        working-directory: dztabib
         run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
       - name: Deploy Backend
-        working-directory: ./server
+        working-directory: dztabibserver
         run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
