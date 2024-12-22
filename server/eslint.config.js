@@ -1,8 +1,10 @@
 // eslint.config.js
+import eslintConfigRecommended from 'eslint-config-recommended';
+
 export default [
+  eslintConfigRecommended,
   {
     files: ['*.js'],
-    extends: ['eslint:recommended'],
     rules: {
       // Add your custom rules here
     },
