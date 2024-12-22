@@ -19,7 +19,7 @@ jobs:
       - name: Link Frontend Project
         run: |
           cd client
-          vercel link --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --yes
+          vercel link --token ${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy Frontend
         run: |
@@ -39,7 +39,7 @@ jobs:
       - name: Link Backend Project
         run: |
           cd server
-          vercel link --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --yes
+          vercel link --token ${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy Backend
         run: |
