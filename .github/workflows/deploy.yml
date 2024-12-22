@@ -57,7 +57,7 @@ jobs:
         run: |
           npm install -g vercel
           cd client
-          vercel --prod --token $VERCEL_TOKEN
+          vercel --prod --token $VERCEL_TOKEN --yes
 
       - name: Deploy Backend
         env:
@@ -65,4 +65,4 @@ jobs:
         run: |
           npm install -g vercel
           cd server
-          vercel --prod --token $VERCEL_TOKEN
+          vercel --prod --token $VERCEL_TOKEN --yes
