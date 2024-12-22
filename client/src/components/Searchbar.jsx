@@ -6,9 +6,9 @@ const Searchbar = () => {
     <div>
       <div className="font-source-serif-pro my-20 mx-28 bg-gradient-to-bl from-[#57C9FF] from-20% p-px rounded-3xl shadow-lg shadow-[#F1F1F1]">
         <div className="p-8 bg-gradient-to-t from-[#EEFAFF] from-[-100%] to-white rounded-3xl">
-          <h2 className="text-[#0069AB] text-3xl font-bold pb-2">
+          <h3 className="text-[#0069AB] text-3xl font-bold pb-2">
             Réservez facilement un rendez-vous en quelques clics.
-          </h2>
+          </h3>
           <div className="grid grid-cols-5 p-3">
             <div className="col-span-4 flex justify-around">
               <div className="flex flex-col">

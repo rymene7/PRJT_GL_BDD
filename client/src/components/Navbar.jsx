@@ -20,7 +20,7 @@ const Navbar = () => {
             key={item}
             onClick={() => handleItemClick(item)}
             className={`
-              p-4 cursor-pointer transition-all duration-300
+              p-8 cursor-pointer transition-all duration-300
               ${
                 activeItem === item
                   ? "text-[#214169] underline font-bold"

@@ -6,10 +6,10 @@ export default {
       fontFamily: {
         "playfair-display": ["'Playfair Display'", "serif"],
         "source-serif-pro": ["'Source Serif Pro'", "serif"],
-        "manrope": ["'Manrope'", "sans-serif"],
+        manrope: ["'Manrope'", "sans-serif"],
+        poppins: ["'Poppins'", "sans-serif"],
       },
     },
   },
   plugins: [],
 };
-
