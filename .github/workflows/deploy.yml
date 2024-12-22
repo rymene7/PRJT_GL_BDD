@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies (Frontend)
+        working-directory: ./client
+        run: npm i
+      - name: Lint and Test (Frontend)
+        working-directory: ./client
+        run: |
+          npm run lint
+          npm test
+      - name: Install dependencies (Backend)
+        working-directory: ./server
+        run: npm i
+      - name: Lint and Test (Backend)
+        working-directory: ./server
+        run: |
+          npm run lint
+          npm test
+          
+  deploy:
+    name: Deploy to Vercel
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Build Frontend (if necessary)
+        working-directory: ./client
+        run: npm run build
+      - name: Deploy Frontend
+        working-directory: ./client
+        run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+      - name: Build Backend (if necessary)
+        working-directory: ./server
+        run: npm run build
+      - name: Deploy Backend
+        working-directory: ./server
+        run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
