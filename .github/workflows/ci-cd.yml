@@ -19,7 +19,7 @@ jobs:
       - name: Deploy Frontend
         run: |
           cd client
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
 
   deploy-backend:
     runs-on: ubuntu-latest
@@ -34,4 +34,4 @@ jobs:
       - name: Deploy Backend
         run: |
           cd server
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
