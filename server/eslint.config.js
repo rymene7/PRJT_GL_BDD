@@ -2,21 +2,19 @@
 export default [
   {
     files: ['*.js'],
-    rules: {
-      // Add your custom rules here
-      'no-unused-vars': 'warn', // Example rule
-      'semi': ['error', 'always'], // Example rule
-    },
     languageOptions: {
       ecmaVersion: 2020,
+      sourceType: 'module', // Moved here, outside of the rules object
       globals: {
-        // Define your global variables here
         console: 'readonly',
         process: 'readonly',
         module: 'readonly',
-        require: 'readonly'
-      }
+        require: 'readonly',
+      },
     },
-    sourceType: 'module',
+    rules: {
+      'no-unused-vars': 'warn',
+      semi: ['error', 'always'],
+    },
   },
 ];
