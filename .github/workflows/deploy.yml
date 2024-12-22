@@ -35,6 +35,20 @@ jobs:
         run: |
           npm run lint
           npm test
+  name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    # ... (your lint and test steps)
+
   deploy:
     name: Deploy to Vercel
     needs: lint-and-test
@@ -48,24 +62,15 @@ jobs:
           node-version: '22'
       - name: Install Vercel CLI
         run: npm install -g vercel
-      - name: Pull Vercel Project Settings (Frontend)
-        working-directory: ./client
-        run: vercel pull --yes --token ${{ secrets.VERCEL_TOKEN }} --project=dztabib # Replace with your project name
       - name: Build Frontend (if necessary)
         working-directory: ./client
-        run: npm run build # Only if you have a build step
+        run: npm run build
       - name: Deploy Frontend
         working-directory: ./client
         run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
-      - name: Pull Vercel Project Settings (Backend)
-        working-directory: ./server
-        run: vercel pull --yes --token ${{ secrets.VERCEL_TOKEN }} --project=dztabibserver # Replace with your project name
       - name: Build Backend (if necessary)
         working-directory: ./server
-        run: npm run build # Only if you have a build step
-      - name: Deploy Backend
-        working-directory: ./server
-        run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+        run: npm run build
       - name: Deploy Backend
         working-directory: ./server
         run: vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
