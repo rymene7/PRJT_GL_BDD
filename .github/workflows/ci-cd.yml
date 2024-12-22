@@ -7,8 +7,8 @@ on:
 
 jobs:
   deploy-frontend:
+    name: Deploy Frontend
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -17,11 +17,12 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy Frontend
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes --project-name dztabib
+        working-directory: client
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
 
   deploy-backend:
+    name: Deploy Backend
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -30,4 +31,5 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy Backend
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes --project-name dztabibserver
+        working-directory: server
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
