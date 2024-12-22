@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le workflow lors des pushs sur la branche main
+  pull_request:
+    branches:
+      - main  # Valide le code lors des PR vers la branche main
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Adaptez selon votre projet
+
+      - name: Install dependencies (Frontend)
+        working-directory: ./client
+        run: npm install
+
+      - name: Lint and Test (Frontend)
+        working-directory: ./client
+        run: |
+          npm run lint
+          npm test
+
+      - name: Install dependencies (Backend)
+        working-directory: ./server
+        run: npm install
+
+      - name: Lint and Test (Backend)
+        working-directory: ./server
+        run: |
+          npm run lint
+          npm test
+
+  deploy:
+    name: Deploy to Vercel
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy Frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npm install -g vercel
+          cd client
+          vercel --prod --token $VERCEL_TOKEN
+
+      - name: Deploy Backend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npm install -g vercel
+          cd server
+          vercel --prod --token $VERCEL_TOKEN
