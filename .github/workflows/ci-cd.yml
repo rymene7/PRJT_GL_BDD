@@ -16,11 +16,6 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      - name: Link Frontend Project
-        run: |
-          cd client
-          vercel link --token ${{ secrets.VERCEL_TOKEN }} --yes
-
       - name: Deploy Frontend
         run: |
           cd client
@@ -35,11 +30,6 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install -g vercel
-
-      - name: Link Backend Project
-        run: |
-          cd server
-          vercel link --token ${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy Backend
         run: |
