@@ -5,61 +5,29 @@ on:
     branches:
       - main
 
-env:
-  NODE_VERSION: '18'
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID_FRONT: ${{ secrets.VERCEL_PROJECT_ID_FRONT }}
-  VERCEL_PROJECT_ID_BACK: ${{ secrets.VERCEL_PROJECT_ID_BACK }}
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
 jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+        
+      - name: Deploy Frontend
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID_FRONT }} --prod
+          
   deploy-backend:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    timeout-minutes: 15
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
+      
       - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+        run: npm install -g vercel
         
-      - name: Deploy Backend to Vercel
-        id: deploy-backend
-        run: |
-          vercel --token ${{ env.VERCEL_TOKEN }} \
-                 --org ${{ env.VERCEL_ORG_ID }} \
-                 --project ${{ env.VERCEL_PROJECT_ID_BACK }} \
-                 --prod
-
-  deploy-frontend:
-    needs: deploy-backend
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-        
-      - name: Deploy Frontend to Vercel
-        id: deploy-frontend
-        run: |
-          vercel --token ${{ env.VERCEL_TOKEN }} \
-                 --org ${{ env.VERCEL_ORG_ID }} \
-                 --project ${{ env.VERCEL_PROJECT_ID_FRONT }} \
-                 --prod
+      - name: Deploy Backend
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID_BACK }} --prod
